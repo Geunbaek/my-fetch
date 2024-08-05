@@ -7,9 +7,10 @@ type FetchIoMethod =
   | 'head'
   | 'options';
 
-type FetchIoOptions = RequestInit & {
+type FetchIoOptions = Omit<RequestInit, 'body'> & {
   params?: Record<string, unknown>;
-  timeout?: number;
+  timeout?: number | null;
+  body?: Record<string, unknown>;
 };
 
 interface FetchIoError {

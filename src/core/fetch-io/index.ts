@@ -73,11 +73,14 @@ class FetchIo extends IFetchIo {
     options?: FetchIoOptions
   ): Promise<ResponseMessage<T>> {
     try {
-      const queryParam = this.formatParams(options?.params ?? {});
+      const queryParam = options?.params
+        ? this.formatParams(options?.params)
+        : '';
 
       const response = await fetch(url + queryParam, {
+        ...options,
         method,
-        body: options?.body ? JSON.stringify(options.body) : undefined,
+        body: options?.body ? JSON.stringify(options.body) : null,
         signal: options?.timeout
           ? AbortSignal.timeout(options?.timeout)
           : undefined,
@@ -85,9 +88,7 @@ class FetchIo extends IFetchIo {
           'Content-Type': 'application/json',
           ...(options?.headers || {}),
         },
-        ...options,
       });
-
       const contentType = response.headers.get('content-type') || '';
 
       const data = (await this.getDataByContentType(
