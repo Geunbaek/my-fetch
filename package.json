@@ -17,14 +17,17 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^11.1.6",
     "@types/node": "^22.1.0",
+    "msw": "^2.3.5",
     "tslib": "^2.6.3",
     "typescript": "^5.2.2",
     "vite": "^5.3.4",
-    "vite-plugin-dts": "^4.0.0-beta.2"
+    "vite-plugin-dts": "^4.0.0-beta.2",
+    "vitest": "^2.0.5"
   }
 }
