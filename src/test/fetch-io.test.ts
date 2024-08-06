@@ -12,6 +12,15 @@ describe('fetch-io', () => {
       expect(response.data).toEqual({ users });
     });
 
+    it('request with query params', async () => {
+      const response = await fetchIo.get<User>('https://example.com/users', {
+        params: { firstName: '1' },
+      });
+      const filteredUsers = users.filter((user) => user.firstName === '1');
+      expect(response.status).toBe(200);
+      expect(response.data).toEqual({ users: filteredUsers });
+    });
+
     it('request with params', async () => {
       const response = await fetchIo.get<User>('https://example.com/users/1');
       const user = users.find((user) => user.id === '1');

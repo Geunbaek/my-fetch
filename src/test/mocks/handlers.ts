@@ -15,13 +15,20 @@ export const users: User[] = [
 ];
 
 export const handlers = [
-  http.get('https://example.com/users', () => {
-    return HttpResponse.json({ users });
+  http.get('https://example.com/users', ({ request }) => {
+    const url = new URL(request.url);
+
+    const firstName = url.searchParams.get('firstName');
+
+    let filteredUsers = users;
+    if (firstName) {
+      filteredUsers = users.filter((user) => user.firstName === firstName);
+    }
+    return HttpResponse.json({ users: filteredUsers });
   }),
 
   http.get<Pick<User, 'id'>>('https://example.com/users/:id', ({ params }) => {
     const { id } = params;
-
     const user = users.find((user) => user.id === id);
     if (!user) return HttpResponse.json(null, { status: 404 });
     return HttpResponse.json({ user });
