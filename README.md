@@ -21,9 +21,9 @@ npm i fetch-io
 ## Usage
 
 ```TypeScript
-// GET Method
 import fetchIo from "fetch-io";
 
+// GET Method
 function getProductById() {
   return fetchIo.get(`${BASE_PATH}/product/1`, {
     params: {
