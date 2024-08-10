@@ -80,7 +80,7 @@ function deleteProduct() {
 Type : `Object`
 
 ```typescript
-interface FetchOptions {
+interface FetchIoOptions {
   // 기존 fetch props
   headers: Object;
   mode: 'cors' | 'no-cors' | 'same-origin';
