@@ -42,6 +42,37 @@ function postProduct() {
     }
   });
 }
+
+// PUT Method
+function updateProduct() {
+  return fetchIo.put(`${BASE_PATH}/product/1`, {
+    body: {
+      category: "food",
+      name: "noodle",
+      price: 1000,
+    }
+  });
+}
+
+// PATCH Method
+function updateProduct() {
+  return fetchIo.put(`${BASE_PATH}/product/1`, {
+    body: {
+      price: 2000,
+    }
+  });
+}
+
+// DELETE Method
+function deleteProduct() {
+  return fetchIo.delete(`${BASE_PATH}/product/1`, {
+      body: {
+      category: "food",
+      name: "noodle",
+      price: 1000,
+    }
+  });
+}
 ```
 
 ### options
