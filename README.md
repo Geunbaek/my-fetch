@@ -8,6 +8,16 @@
 npm i fetch-io
 ```
 
+## method
+
+- get(url, options?)
+- post(url, options?)
+- put(url, options?)
+- patch(url, options?)
+- delete(url, options?)
+- head(url, options?)
+- options(url, options?)
+
 ## Usage
 
 ```TypeScript
@@ -21,17 +31,17 @@ function getProductById() {
     }
   });
 }
+
+function postProduct() {
+  return fetchIo.post(`${BASE_PATH}/product/1`, {
+    body: {
+      category: "food",
+      name: "noodle",
+      price: 1000,
+    }
+  });
+}
 ```
-
-## method
-
-- get(url, options?)
-- post(url, options?)
-- put(url, options?)
-- patch(url, options?)
-- delete(url, options?)
-- head(url, options?)
-- options(url, options?)
 
 ### options
 
