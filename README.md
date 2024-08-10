@@ -32,6 +32,7 @@ function getProductById() {
   });
 }
 
+// POST Method
 function postProduct() {
   return fetchIo.post(`${BASE_PATH}/product/1`, {
     body: {
