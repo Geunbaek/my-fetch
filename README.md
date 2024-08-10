@@ -8,15 +8,7 @@
 npm i fetch-io
 ```
 
-## method
-
-- get(url, options?)
-- post(url, options?)
-- put(url, options?)
-- patch(url, options?)
-- delete(url, options?)
-- head(url, options?)
-- options(url, options?)
+## Usage
 
 ```TypeScript
 // GET Method
@@ -28,5 +20,67 @@ function getProductById() {
       category: "food"
     }
   });
+}
+```
+
+## method
+
+- get(url, options?)
+- post(url, options?)
+- put(url, options?)
+- patch(url, options?)
+- delete(url, options?)
+- head(url, options?)
+- options(url, options?)
+
+### options
+
+Type : `Object`
+
+```typescript
+interface FetchOptions {
+  // 기존 fetch props
+  headers: Object;
+  mode: 'cors' | 'no-cors' | 'same-origin';
+  credentials: 'omit' | 'same-origin' | 'include';
+  cache:
+    | 'default'
+    | 'no-store'
+    | 'reload'
+    | 'no-cache'
+    | 'force-cache'
+    | 'only-if-cached';
+  redirect: 'follow' | 'error' | 'manual';
+  referrer: string;
+  referrerPolicy:
+    | 'no-referrer'
+    | 'no-referrer-when-downgrade'
+    | 'same-origin'
+    | 'origin'
+    | 'strict-origin'
+    | 'origin-when-cross-origin'
+    | 'strict-origin-when-cross-origin'
+    | 'unsafe-url';
+  integrity: string;
+  keepalive: boolean;
+  priority: 'high' | 'low' | 'auto';
+
+  // fetch-io props
+  timeout: number;
+  params: Object;
+  body:
+    | Object
+    | string
+    | ArrayBuffer
+    | Blob
+    | FormData
+    | URLSearchParams
+    | ReadableStream;
+
+  // TODO: next props
+  next: {
+    revalidate: false | 0 | number;
+    tags: string[];
+  };
 }
 ```

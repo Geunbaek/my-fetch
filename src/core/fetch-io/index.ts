@@ -1,3 +1,4 @@
+import { URLSearchParams } from 'node:url';
 import type {
   FetchIoError,
   FetchIoMethod,
@@ -43,12 +44,26 @@ abstract class IFetchIo {
 }
 
 class FetchIo extends IFetchIo {
+  private isBodyInit(
+    value: Record<string, unknown> | BodyInit
+  ): value is BodyInit {
+    return (
+      typeof value === 'string' ||
+      ArrayBuffer.isView(value) ||
+      value instanceof Blob ||
+      value instanceof ArrayBuffer ||
+      value instanceof FormData ||
+      value instanceof URLSearchParams ||
+      value instanceof ReadableStream
+    );
+  }
+
   private formatParams(params: Record<string, unknown>) {
-    const formatedParams = Object.entries(params).reduce((acc, param) => {
-      const [key, value] = param;
-      return [...acc, `${key}=${value}`];
-    }, [] as string[]);
-    return '?' + formatedParams.join('&');
+    const formatedParams = Object.entries(params).reduce(
+      (acc, [key, value]) => ({ ...acc, [key]: new String(value) }),
+      {}
+    );
+    return new URLSearchParams(formatedParams).toString();
   }
 
   private async getDataByContentType(response: Response, contentType: string) {
@@ -77,12 +92,18 @@ class FetchIo extends IFetchIo {
         ? this.formatParams(options?.params)
         : '';
 
-      const response = await fetch(url + queryParam, {
+      const body = options?.body
+        ? this.isBodyInit(options.body)
+          ? options.body
+          : JSON.stringify(options.body)
+        : null;
+
+      const response = await fetch(`${url}?${queryParam}`, {
         ...options,
         method,
-        body: options?.body ? JSON.stringify(options.body) : null,
+        body,
         signal: options?.timeout
-          ? AbortSignal.timeout(options?.timeout)
+          ? AbortSignal.timeout(options.timeout)
           : undefined,
         headers: {
           'Content-Type': 'application/json',
