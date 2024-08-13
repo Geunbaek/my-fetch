@@ -1,5 +1,4 @@
 import { http, HttpResponse } from 'msw';
-
 export interface User {
   id: string;
   firstName: string;
@@ -27,11 +26,24 @@ export const handlers = [
     return HttpResponse.json({ users: filteredUsers });
   }),
 
-  http.get<Pick<User, 'id'>>('https://example.com/users/:id', ({ params }) => {
-    const { id } = params;
-    const user = users.find((user) => user.id === id);
-    if (!user) return HttpResponse.json(null, { status: 404 });
-    return HttpResponse.json({ user });
+  http.post<User>('https://example.com/user', async ({ request }) => {
+    const url = new URL(request.url);
+
+    const id = url.searchParams.get('id');
+    const firstName = url.searchParams.get('firstName');
+    const lastName = url.searchParams.get('lastName');
+
+    if (!id || !firstName || !lastName) {
+      return HttpResponse.json(null, { status: 400 });
+    }
+
+    return HttpResponse.json({
+      user: {
+        id,
+        firstName,
+        lastName,
+      },
+    });
   }),
 
   http.post<{}, User>('https://example.com/users', async ({ request }) => {
@@ -43,9 +55,11 @@ export const handlers = [
     }
 
     return HttpResponse.json({
-      id,
-      firstName,
-      lastName,
+      user: {
+        id,
+        firstName,
+        lastName,
+      },
     });
   }),
 
@@ -58,9 +72,11 @@ export const handlers = [
     }
 
     return HttpResponse.json({
-      id,
-      firstName,
-      lastName,
+      user: {
+        id,
+        firstName,
+        lastName,
+      },
     });
   }),
 
@@ -109,7 +125,7 @@ export const handlers = [
         return HttpResponse.json(null, { status: 404 });
       }
 
-      return HttpResponse.json(null, { status: 200 });
+      return HttpResponse.json({ user }, { status: 200 });
     }
   ),
 
@@ -132,4 +148,28 @@ export const handlers = [
       },
     });
   }),
+
+  // TODO: formData parsing error
+  // http.post<{}, User>(
+  //   'https://example.com/form-data/users',
+  //   async ({ request }) => {
+  //     const data = await request.formData();
+
+  //     const id = data.get('id');
+  //     const firstName = data.get('firstName');
+  //     const lastName = data.get('lastName');
+
+  //     if (!id || !firstName || !lastName) {
+  //       return HttpResponse.json(null, { status: 400 });
+  //     }
+
+  //     return HttpResponse.json({
+  //       user: {
+  //         id,
+  //         firstName,
+  //         lastName,
+  //       },
+  //     });
+  //   }
+  // ),
 ];
