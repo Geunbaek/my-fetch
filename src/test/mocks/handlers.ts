@@ -1,11 +1,11 @@
 import { http, HttpResponse } from 'msw';
-export interface User {
+interface User {
   id: string;
   firstName: string;
   lastName: string;
 }
 
-export const users: User[] = [
+const users: User[] = [
   {
     id: '1',
     firstName: 'John',
@@ -13,7 +13,7 @@ export const users: User[] = [
   },
 ];
 
-export const handlers = [
+const handlers = [
   http.get('https://example.com/users', ({ request }) => {
     const url = new URL(request.url);
 
@@ -173,3 +173,6 @@ export const handlers = [
   //   }
   // ),
 ];
+
+export type { User };
+export { users, handlers };
